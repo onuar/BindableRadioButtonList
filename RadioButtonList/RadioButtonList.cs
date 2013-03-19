@@ -2,6 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Linq;
@@ -102,12 +103,7 @@ namespace NiceControls
 
         private void RegisterNotifyPropertyChanged()
         {
-            var selectedIndexBinding = GetSelectedIndexBinding();
-            if (selectedIndexBinding == null)
-            {
-                return;
-            }
-            var bindingSource = selectedIndexBinding.DataSource as BindingSource;
+            var bindingSource = GetSelectedIndexBindingSource();
             if (bindingSource == null)
             {
                 return;
@@ -116,7 +112,7 @@ namespace NiceControls
             var @object = bindingSource.Current;
             if (@object == null)
             {
-                var objectType = bindingSource.DataSource as TypeInfo;
+                var objectType = bindingSource.DataSource as Type;
                 if (objectType != null)
                 {
                     @object = Activator.CreateInstance(objectType);
@@ -254,7 +250,7 @@ namespace NiceControls
             {
                 return;
             }
-            var bindingSource = selectedIndexBinding.DataSource as BindingSource;
+            var bindingSource = GetSelectedIndexBindingSource();
             if (bindingSource == null)
             {
                 return;
@@ -263,10 +259,10 @@ namespace NiceControls
             var @object = bindingSource.Current;
             if (@object == null)
             {
-                var objectType = bindingSource.DataSource as TypeInfo;
+                var objectType = bindingSource.DataSource as Type;
                 if (objectType != null)
                 {
-                    @object = Activator.CreateInstance(objectType);
+                    @object = ReflectionHelper.SecureCreateInstance(objectType);
                 }
             }
             var value = SelectedValue;
@@ -303,6 +299,17 @@ namespace NiceControls
                 return null;
             }
             return selectedIndexBinding;
+        }
+
+        private BindingSource GetSelectedIndexBindingSource()
+        {
+            var binding = GetSelectedIndexBinding();
+            if (binding == null)
+            {
+                return null;
+            }
+            var bindingSource = binding.DataSource as BindingSource;
+            return bindingSource;
         }
     }
 }

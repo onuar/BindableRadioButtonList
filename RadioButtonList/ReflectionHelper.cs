@@ -24,11 +24,21 @@ namespace NiceControls
             {
                 return null;
             }
-            var value = propertyInfo.GetValue(@object);
+            var value = propertyInfo.GetValue(@object, null);
             var targetType = IsNullableType(propertyInfo.PropertyType) ? Nullable.GetUnderlyingType(propertyInfo.PropertyType) : propertyInfo.PropertyType;
             value = Convert.ChangeType(value, targetType);
 
             return value;
+        }
+
+        internal static object SecureCreateInstance(Type objectType)
+        {
+            object @object = null;
+            if (objectType != null)
+            {
+                @object = Activator.CreateInstance(objectType);
+            }
+            return @object;
         }
 
         private static bool IsNullableType(Type type)
