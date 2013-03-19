@@ -31,22 +31,11 @@ namespace NiceControls.Tester
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.radioButtonList1 = new NiceControls.RadioButtonList();
             this.button1 = new System.Windows.Forms.Button();
+            this.radioButtonList1 = new NiceControls.RadioButtonList();
             this.rdlBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.rdlBindingSource)).BeginInit();
             this.SuspendLayout();
-            // 
-            // radioButtonList1
-            // 
-            this.radioButtonList1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.radioButtonList1.DataBindings.Add(new System.Windows.Forms.Binding("SelectedIndex", this.rdlBindingSource, "Id", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.radioButtonList1.DisplayMember = "TestText";
-            this.radioButtonList1.Location = new System.Drawing.Point(37, 25);
-            this.radioButtonList1.Name = "radioButtonList1";
-            this.radioButtonList1.Size = new System.Drawing.Size(212, 201);
-            this.radioButtonList1.TabIndex = 2;
-            this.radioButtonList1.ValueMember = "TestEnum";
             // 
             // button1
             // 
@@ -57,6 +46,18 @@ namespace NiceControls.Tester
             this.button1.Text = "GetSelectedItemValue";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1Click);
+            // 
+            // radioButtonList1
+            // 
+            this.radioButtonList1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.radioButtonList1.DataBindings.Add(new System.Windows.Forms.Binding("SelectedIndex", this.rdlBindingSource, "Id", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.radioButtonList1.DisplayMember = "TestText";
+            this.radioButtonList1.Location = new System.Drawing.Point(37, 25);
+            this.radioButtonList1.Name = "radioButtonList1";
+            this.radioButtonList1.Orientation = NiceControls.ListItemOrientation.Vertical;
+            this.radioButtonList1.Size = new System.Drawing.Size(212, 201);
+            this.radioButtonList1.TabIndex = 2;
+            this.radioButtonList1.ValueMember = "TestEnum";
             // 
             // rdlBindingSource
             // 

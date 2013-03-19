@@ -14,6 +14,7 @@ namespace NiceControls
         private int _leftMargin = 2;
         private int _topMargin = 2;
         private object _dataSource;
+        private ListItemOrientation _orientation = ListItemOrientation.Horizontal;
         private const string SelectedIndexEventName = "SelectedIndex";
 
         public RadioButtonList()
@@ -75,6 +76,13 @@ namespace NiceControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Item SelectedItem { get { return _items[SelectedIndex]; } }
 
+        [DefaultValue(ListItemOrientation.Horizontal)]
+        public ListItemOrientation Orientation
+        {
+            get { return _orientation; }
+            set { _orientation = value; }
+        }
+
         private void ItemsChanged(object sender, EventArgs e)
         {
             UpdateRadioButtons();
@@ -83,8 +91,7 @@ namespace NiceControls
         private void UpdateRadioButtons()
         {
             Controls.Clear();
-
-            int y = 0;
+            int coordinate = 0;
 
             foreach (var item in _items)
             {
@@ -92,16 +99,25 @@ namespace NiceControls
                                          {
                                              Text = item.Text,
                                              Tag = item,
-                                             Top = y,
-                                             Left = LeftMargin,
                                              ForeColor = Color.Black
                                          };
+                switch (Orientation)
+                {
+                    case ListItemOrientation.Horizontal:
+                        newRadioButton.Top = coordinate;
+                        newRadioButton.Left = LeftMargin;
 
+                        coordinate = coordinate + newRadioButton.Height + TopMargin;
+                        break;
+                    case ListItemOrientation.Vertical:
+                        newRadioButton.Top = TopMargin;
+                        newRadioButton.Left = coordinate;
+                        coordinate = coordinate + newRadioButton.Width + LeftMargin;
+                        break;
+                }
                 newRadioButton.CheckedChanged += RadioButtonCheckedChanged;
 
                 Controls.Add(newRadioButton);
-
-                y = y + newRadioButton.Height + TopMargin;
             }
         }
 
