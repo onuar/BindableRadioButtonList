@@ -43,13 +43,13 @@ namespace NiceControls.Tester
             radioButtonList1.DataSource = source;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1Click(object sender, EventArgs e)
         {
             if (CurrentTestModel == null)
             {
                 return;
             }
-            MessageBox.Show(CurrentTestModel.TestText);
+            MessageBox.Show(CurrentTestModel.Id.ToString());
         }
     }
 }

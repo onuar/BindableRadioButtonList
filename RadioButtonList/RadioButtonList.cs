@@ -195,7 +195,10 @@ namespace NiceControls
                 var index = _items.IndexOf(radioButton.Tag as Item);
                 SelectedIndex = index;
 
-                SelectedIndexChanged(sender, e);
+                if (SelectedIndexChanged != null)
+                {
+                    SelectedIndexChanged(sender, e);
+                }
                 UpdateSelectedIndexBindings();
             }
         }

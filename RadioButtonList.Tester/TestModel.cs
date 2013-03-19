@@ -15,7 +15,7 @@
 
     public enum TestEnum
     {
-        FirstItem = 1,
-        SecondItem = 2
+        FirstItem = 666,
+        SecondItem = 777
     }
 }

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NiceControls", "RadioButtonList\NiceControls.csproj", "{A5520D2E-522D-4248-8A4F-121013FDD811}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadioButtonList.Tester", "RadioButtonList.Tester\RadioButtonList.Tester.csproj", "{9FEB3CBB-860E-4084-BE45-E6965B2A8AE7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NiceControls.Tester", "RadioButtonList.Tester\NiceControls.Tester.csproj", "{9FEB3CBB-860E-4084-BE45-E6965B2A8AE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
