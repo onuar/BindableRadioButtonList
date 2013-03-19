@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
-using RadioButtonList.Tester;
 
 namespace NiceControls.Tester
 {
@@ -20,7 +20,8 @@ namespace NiceControls.Tester
         public TestModel CurrentTestModel
         {
             get { return rdlBindingSource.DataSource as TestModel; }
-            set { rdlBindingSource.DataSource = value; }
+            set
+            { rdlBindingSource.DataSource = value; }
         }
 
         private void FillRadioButtonList()
@@ -49,7 +50,19 @@ namespace NiceControls.Tester
             {
                 return;
             }
-            MessageBox.Show(CurrentTestModel.Id.ToString());
+            MessageBox.Show(CurrentTestModel.TestEnum.ToString());
+        }
+
+        private void BtnFirstItemClick(object sender, EventArgs e)
+        {
+            CurrentTestModel = new TestModel ();
+            CurrentTestModel.TestEnum = TestEnum.FirstItem;
+        }
+
+        private void BtnSecondItemClick(object sender, EventArgs e)
+        {
+            CurrentTestModel = new TestModel();
+            CurrentTestModel.TestEnum = TestEnum.SecondItem;
         }
     }
 }

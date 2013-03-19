@@ -21,6 +21,7 @@ namespace NiceControls
         {
             _items = new ItemCollection();
             _items.ItemsChanged += ItemsChanged;
+            DataBindings.CollectionChanged += DataBindingsCollectionChanged;
         }
 
         public delegate void ItemSelectedIndexChangedDelegate(object sender, EventArgs e);
@@ -83,42 +84,84 @@ namespace NiceControls
             set { _orientation = value; }
         }
 
+        private void DataBindingsCollectionChanged(object sender, CollectionChangeEventArgs e)
+        {
+            var binding = GetSelectedIndexBinding();
+            var bindingSource = binding.DataSource as BindingSource;
+            if (bindingSource == null)
+            {
+                return;
+            }
+            bindingSource.DataSourceChanged += BindingSourceDataSourceChanged;
+        }
+
+        void BindingSourceDataSourceChanged(object sender, EventArgs e)
+        {
+            RegisterNotifyPropertyChanged();
+        }
+
+        private void RegisterNotifyPropertyChanged()
+        {
+            var selectedIndexBinding = GetSelectedIndexBinding();
+            if (selectedIndexBinding == null)
+            {
+                return;
+            }
+            var bindingSource = selectedIndexBinding.DataSource as BindingSource;
+            if (bindingSource == null)
+            {
+                return;
+            }
+
+            var @object = bindingSource.Current;
+            if (@object == null)
+            {
+                var objectType = bindingSource.DataSource as TypeInfo;
+                if (objectType != null)
+                {
+                    @object = Activator.CreateInstance(objectType);
+                }
+            }
+
+            var notifyPropertyChanged = (@object as INotifyPropertyChanged);
+            if (notifyPropertyChanged != null)
+            {
+                notifyPropertyChanged.PropertyChanged += NotifyValuePropertyChanged;
+            }
+        }
+
+        void NotifyValuePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(ValueMember) && e.PropertyName.Equals(ValueMember))
+            {
+                var binding = GetSelectedIndexBinding();
+                var bindingSource = binding.DataSource as BindingSource;
+                if (bindingSource == null)
+                {
+                    return;
+                }
+                object @object = bindingSource.Current;
+                var newValue = ReflectionHelper.GetPropertyValue(@object, ValueMember);
+                SelectRadioButtonByValue(newValue);
+            }
+        }
+
+        private void SelectRadioButtonByValue(object selectedValue)
+        {
+            foreach (RadioButton radioButton in Controls)
+            {
+                var item = radioButton.Tag as Item;
+                if (item == null)
+                {
+                    throw new InvalidCastException("RadioButton");
+                }
+                radioButton.Checked = selectedValue.Equals(item.Value);
+            }
+        }
+
         private void ItemsChanged(object sender, EventArgs e)
         {
             UpdateRadioButtons();
-        }
-
-        private void UpdateRadioButtons()
-        {
-            Controls.Clear();
-            int coordinate = 0;
-
-            foreach (var item in _items)
-            {
-                var newRadioButton = new RadioButton
-                                         {
-                                             Text = item.Text,
-                                             Tag = item,
-                                             ForeColor = Color.Black
-                                         };
-                switch (Orientation)
-                {
-                    case ListItemOrientation.Horizontal:
-                        newRadioButton.Top = coordinate;
-                        newRadioButton.Left = LeftMargin;
-
-                        coordinate = coordinate + newRadioButton.Height + TopMargin;
-                        break;
-                    case ListItemOrientation.Vertical:
-                        newRadioButton.Top = TopMargin;
-                        newRadioButton.Left = coordinate;
-                        coordinate = coordinate + newRadioButton.Width + LeftMargin;
-                        break;
-                }
-                newRadioButton.CheckedChanged += RadioButtonCheckedChanged;
-
-                Controls.Add(newRadioButton);
-            }
         }
 
         private void UpdateItems(object dataSource)
@@ -166,19 +209,52 @@ namespace NiceControls
             Items.AddAll(newItems);
         }
 
-        private void UpdateSelectedIndexBindings()
+        private void UpdateRadioButtons()
+        {
+            Controls.Clear();
+            int coordinate = 0;
+
+            foreach (var item in _items)
+            {
+                var newRadioButton = new RadioButton
+                                         {
+                                             Text = item.Text,
+                                             Tag = item,
+                                             ForeColor = Color.Black
+                                         };
+                switch (Orientation)
+                {
+                    case ListItemOrientation.Horizontal:
+                        newRadioButton.Top = coordinate;
+                        newRadioButton.Left = LeftMargin;
+
+                        coordinate = coordinate + newRadioButton.Height + TopMargin;
+                        break;
+                    case ListItemOrientation.Vertical:
+                        newRadioButton.Top = TopMargin;
+                        newRadioButton.Left = coordinate;
+                        coordinate = coordinate + newRadioButton.Width + LeftMargin;
+                        break;
+                }
+                newRadioButton.CheckedChanged += RadioButtonCheckedChanged;
+
+                Controls.Add(newRadioButton);
+            }
+        }
+
+        private void UpdateSelectedIndexBinding()
         {
             if (DataBindings.Count == 0)
             {
                 return;
             }
 
-            var selectedIndexDataBinding = DataBindings.Cast<Binding>().FirstOrDefault(binding => binding.PropertyName.Equals(SelectedIndexEventName));
-            if (selectedIndexDataBinding == null)
+            var selectedIndexBinding = GetSelectedIndexBinding();
+            if (selectedIndexBinding == null)
             {
                 return;
             }
-            var bindingSource = selectedIndexDataBinding.DataSource as BindingSource;
+            var bindingSource = selectedIndexBinding.DataSource as BindingSource;
             if (bindingSource == null)
             {
                 return;
@@ -195,7 +271,7 @@ namespace NiceControls
             }
             var value = SelectedValue;
 
-            ReflectionHelper.SetPropertyValue(@object, selectedIndexDataBinding.BindingMemberInfo.BindingMember, value);
+            ReflectionHelper.SetPropertyValue(@object, selectedIndexBinding.BindingMemberInfo.BindingMember, value);
             bindingSource.DataSource = @object;
         }
 
@@ -215,8 +291,18 @@ namespace NiceControls
                 {
                     SelectedIndexChanged(sender, e);
                 }
-                UpdateSelectedIndexBindings();
+                UpdateSelectedIndexBinding();
             }
+        }
+
+        private Binding GetSelectedIndexBinding()
+        {
+            var selectedIndexBinding = DataBindings.Cast<Binding>().FirstOrDefault(binding => binding.PropertyName.Equals(SelectedIndexEventName));
+            if (selectedIndexBinding == null)
+            {
+                return null;
+            }
+            return selectedIndexBinding;
         }
     }
 }

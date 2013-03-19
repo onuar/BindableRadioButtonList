@@ -13,9 +13,7 @@ namespace NiceControls
             }
 
             var targetType = IsNullableType(propertyInfo.PropertyType) ? Nullable.GetUnderlyingType(propertyInfo.PropertyType) : propertyInfo.PropertyType;
-
             value = Convert.ChangeType(value, targetType);
-
             propertyInfo.SetValue(@object, value, null);
         }
 
@@ -26,7 +24,11 @@ namespace NiceControls
             {
                 return null;
             }
-            return propertyInfo.GetValue(@object);
+            var value = propertyInfo.GetValue(@object);
+            var targetType = IsNullableType(propertyInfo.PropertyType) ? Nullable.GetUnderlyingType(propertyInfo.PropertyType) : propertyInfo.PropertyType;
+            value = Convert.ChangeType(value, targetType);
+
+            return value;
         }
 
         private static bool IsNullableType(Type type)
