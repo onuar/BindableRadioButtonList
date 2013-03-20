@@ -32,10 +32,10 @@
             this.button1 = new System.Windows.Forms.Button();
             this.btnSecondItem = new System.Windows.Forms.Button();
             this.btnFirstItem = new System.Windows.Forms.Button();
-            this.radioButtonList2 = new NiceControls.RadioButtonList();
-            this.rdlBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.radioButtonList1 = new NiceControls.RadioButtonList();
             this.button2 = new System.Windows.Forms.Button();
+            this.radioButtonList2 = new NiceControls.RadioButtonList();
+            this.radioButtonList1 = new NiceControls.RadioButtonList();
+            this.rdlBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.rdlBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -45,7 +45,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(212, 23);
             this.button1.TabIndex = 3;
-            this.button1.Text = "GetBindedModel.TestEnum";
+            this.button1.Text = "GetBindedCurrentModel.TestEnum";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1Click);
             // 
@@ -69,6 +69,16 @@
             this.btnFirstItem.UseVisualStyleBackColor = true;
             this.btnFirstItem.Click += new System.EventHandler(this.BtnFirstItemClick);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(292, 233);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(314, 23);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "GetBindedCurrentModel.Id";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.Button2Click);
+            // 
             // radioButtonList2
             // 
             this.radioButtonList2.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -79,10 +89,6 @@
             this.radioButtonList2.Size = new System.Drawing.Size(314, 201);
             this.radioButtonList2.TabIndex = 5;
             this.radioButtonList2.ValueMember = null;
-            // 
-            // rdlBindingSource
-            // 
-            this.rdlBindingSource.DataSource = typeof(NiceControls.Tester.TestModel);
             // 
             // radioButtonList1
             // 
@@ -95,15 +101,9 @@
             this.radioButtonList1.TabIndex = 2;
             this.radioButtonList1.ValueMember = "TestEnum";
             // 
-            // button2
+            // rdlBindingSource
             // 
-            this.button2.Location = new System.Drawing.Point(292, 233);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(314, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "GetBindedModel.Id";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.Button2Click);
+            this.rdlBindingSource.DataSource = typeof(NiceControls.Tester.TestModel);
             // 
             // FormTest
             // 

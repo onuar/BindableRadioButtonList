@@ -11,7 +11,7 @@ namespace NiceControls
 {
     public class RadioButtonList : UserControl
     {
-        private ItemCollection _items;
+        private readonly ItemCollection _items;
         private int _leftMargin = 2;
         private int _topMargin = 2;
         private object _dataSource;
@@ -22,8 +22,8 @@ namespace NiceControls
         public RadioButtonList()
         {
             _items = new ItemCollection();
-            _items.ItemsChanged += ItemsChanged;
-            _items.ItemsChanging += ItemsChanging;
+            _items.ItemsChanged += ItemsCollectionChanged;
+            _items.ItemsChanging += ItemsCollectionChanging;
             DataBindings.CollectionChanged += DataBindingsCollectionChanged;
         }
 
@@ -57,7 +57,6 @@ namespace NiceControls
         public ItemCollection Items
         {
             get { return _items; }
-            set { _items = value; }
         }
 
         [Browsable(false)]
@@ -72,8 +71,8 @@ namespace NiceControls
                     throw new ArgumentException("BadDataSourceForComplexBinding");
                 }
                 _dataSource = value;
-                UpdateItems(_dataSource);
-                _dataSourceBinded = true;
+                UpdateItemsFromDataSource(_dataSource);
+                _dataSourceBinded = _dataSource != null;
             }
         }
 
@@ -100,8 +99,12 @@ namespace NiceControls
 
         private void DataBindingsCollectionChanged(object sender, CollectionChangeEventArgs e)
         {
-            var binding = GetSelectedIndexBinding();
+            var binding = e.Element as Binding;
             if (binding == null)
+            {
+                return;
+            }
+            if (!binding.PropertyName.Equals(SelectedIndexEventName))
             {
                 return;
             }
@@ -177,7 +180,7 @@ namespace NiceControls
             }
         }
 
-        public void ItemsChanging(object sender, EventArgs e)
+        public void ItemsCollectionChanging(object sender, EventArgs e)
         {
             if (_dataSourceBinded)
             {
@@ -185,19 +188,21 @@ namespace NiceControls
             }
         }
 
-        private void ItemsChanged(object sender, EventArgs e)
+        private void ItemsCollectionChanged(object sender, EventArgs e)
         {
             UpdateRadioButtons();
         }
 
-        private void UpdateItems(object dataSource)
+        private void UpdateItemsFromDataSource(object dataSource)
         {
             var list = dataSource as IList;
-            var newItems = new ItemCollection();
+            _items.Clear();
             if (list == null)
             {
                 return;
             }
+            var newItems = new ItemCollection();
+
             foreach (var item in list)
             {
                 string itemText = string.Empty;
@@ -267,9 +272,38 @@ namespace NiceControls
 
                 Controls.Add(newRadioButton);
             }
+
+            if (Controls.Count > 0)
+            {
+                var firstRadioButton = (Controls[0] as RadioButton);
+                if (firstRadioButton != null)
+                {
+                    firstRadioButton.Checked = true;
+                }
+            }
         }
 
-        private void UpdateSelectedIndexBinding()
+        private void RadioButtonCheckedChanged(object sender, EventArgs e)
+        {
+            var radioButton = sender as RadioButton;
+            if (radioButton == null)
+            {
+                return;
+            }
+            if (radioButton.Checked)
+            {
+                var index = _items.IndexOf(radioButton.Tag as Item);
+                SelectedIndex = index;
+
+                if (SelectedIndexChanged != null)
+                {
+                    SelectedIndexChanged(sender, e);
+                }
+                UpdateSelectedIndexBindingDataSource();
+            }
+        }
+
+        private void UpdateSelectedIndexBindingDataSource()
         {
             if (DataBindings.Count == 0)
             {
@@ -300,26 +334,6 @@ namespace NiceControls
 
             ReflectionHelper.SetPropertyValue(@object, selectedIndexBinding.BindingMemberInfo.BindingMember, value);
             bindingSource.DataSource = @object;
-        }
-
-        private void RadioButtonCheckedChanged(object sender, EventArgs e)
-        {
-            var radioButton = sender as RadioButton;
-            if (radioButton == null)
-            {
-                return;
-            }
-            if (radioButton.Checked)
-            {
-                var index = _items.IndexOf(radioButton.Tag as Item);
-                SelectedIndex = index;
-
-                if (SelectedIndexChanged != null)
-                {
-                    SelectedIndexChanged(sender, e);
-                }
-                UpdateSelectedIndexBinding();
-            }
         }
 
         private Binding GetSelectedIndexBinding()

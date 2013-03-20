@@ -14,7 +14,7 @@ namespace NiceControls.Tester
 
         private void Form1Load(object sender, EventArgs e)
         {
-            radioButtonList1.DataSource = FillRadioButtonList();
+            radioButtonList1.DataSource = GetDataSource();
 
             radioButtonList2.Items.Add(new Item("NewItem1", 1));
             radioButtonList2.Items.Add(new Item("NewItem2", 2));
@@ -29,7 +29,7 @@ namespace NiceControls.Tester
             { rdlBindingSource.DataSource = value; }
         }
 
-        private object FillRadioButtonList()
+        private object GetDataSource()
         {
             var source = new List<TestModel>
                              {
