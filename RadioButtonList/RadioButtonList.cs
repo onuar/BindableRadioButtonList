@@ -88,6 +88,10 @@ namespace NiceControls
         private void DataBindingsCollectionChanged(object sender, CollectionChangeEventArgs e)
         {
             var binding = GetSelectedIndexBinding();
+            if (binding == null)
+            {
+                return;
+            }
             var bindingSource = binding.DataSource as BindingSource;
             if (bindingSource == null)
             {
@@ -128,16 +132,22 @@ namespace NiceControls
 
         void NotifyValuePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(ValueMember) && e.PropertyName.Equals(ValueMember))
+            var binding = GetSelectedIndexBinding();
+            if (binding == null)
             {
-                var binding = GetSelectedIndexBinding();
+                return;
+            }
+            var changedProperty = binding.BindingMemberInfo.BindingField;
+            if (!string.IsNullOrEmpty(ValueMember) && e.PropertyName.Equals(changedProperty))
+            {
+
                 var bindingSource = binding.DataSource as BindingSource;
                 if (bindingSource == null)
                 {
                     return;
                 }
                 object @object = bindingSource.Current;
-                var newValue = ReflectionHelper.GetPropertyValue(@object, ValueMember);
+                var newValue = ReflectionHelper.GetPropertyValue(@object, changedProperty);
                 SelectRadioButtonByValue(newValue);
             }
         }
