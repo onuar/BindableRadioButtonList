@@ -30,10 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
-            this.radioButtonList1 = new NiceControls.RadioButtonList();
-            this.rdlBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.btnSecondItem = new System.Windows.Forms.Button();
             this.btnFirstItem = new System.Windows.Forms.Button();
+            this.radioButtonList2 = new NiceControls.RadioButtonList();
+            this.rdlBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.radioButtonList1 = new NiceControls.RadioButtonList();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.rdlBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -41,27 +43,11 @@
             // 
             this.button1.Location = new System.Drawing.Point(37, 233);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(216, 23);
+            this.button1.Size = new System.Drawing.Size(212, 23);
             this.button1.TabIndex = 3;
-            this.button1.Text = "GetSelectedItemValue";
+            this.button1.Text = "GetBindedModel.TestEnum";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1Click);
-            // 
-            // radioButtonList1
-            // 
-            this.radioButtonList1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.radioButtonList1.DataBindings.Add(new System.Windows.Forms.Binding("SelectedIndex", this.rdlBindingSource, "TestEnum", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.radioButtonList1.DisplayMember = "TestText";
-            this.radioButtonList1.Location = new System.Drawing.Point(37, 25);
-            this.radioButtonList1.Name = "radioButtonList1";
-            this.radioButtonList1.Orientation = NiceControls.ListItemOrientation.Vertical;
-            this.radioButtonList1.Size = new System.Drawing.Size(212, 201);
-            this.radioButtonList1.TabIndex = 2;
-            this.radioButtonList1.ValueMember = "TestEnum";
-            // 
-            // rdlBindingSource
-            // 
-            this.rdlBindingSource.DataSource = typeof(NiceControls.Tester.TestModel);
             // 
             // btnSecondItem
             // 
@@ -83,13 +69,51 @@
             this.btnFirstItem.UseVisualStyleBackColor = true;
             this.btnFirstItem.Click += new System.EventHandler(this.BtnFirstItemClick);
             // 
+            // radioButtonList2
+            // 
+            this.radioButtonList2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.radioButtonList2.DataBindings.Add(new System.Windows.Forms.Binding("SelectedIndex", this.rdlBindingSource, "Id", true));
+            this.radioButtonList2.DisplayMember = null;
+            this.radioButtonList2.Location = new System.Drawing.Point(292, 25);
+            this.radioButtonList2.Name = "radioButtonList2";
+            this.radioButtonList2.Size = new System.Drawing.Size(314, 201);
+            this.radioButtonList2.TabIndex = 5;
+            this.radioButtonList2.ValueMember = null;
+            // 
+            // rdlBindingSource
+            // 
+            this.rdlBindingSource.DataSource = typeof(NiceControls.Tester.TestModel);
+            // 
+            // radioButtonList1
+            // 
+            this.radioButtonList1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.radioButtonList1.DataBindings.Add(new System.Windows.Forms.Binding("SelectedIndex", this.rdlBindingSource, "TestEnum", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.radioButtonList1.DisplayMember = "TestText";
+            this.radioButtonList1.Location = new System.Drawing.Point(37, 25);
+            this.radioButtonList1.Name = "radioButtonList1";
+            this.radioButtonList1.Size = new System.Drawing.Size(212, 201);
+            this.radioButtonList1.TabIndex = 2;
+            this.radioButtonList1.ValueMember = "TestEnum";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(292, 233);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(314, 23);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "GetBindedModel.Id";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.Button2Click);
+            // 
             // FormTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 327);
+            this.ClientSize = new System.Drawing.Size(638, 327);
+            this.Controls.Add(this.radioButtonList2);
             this.Controls.Add(this.btnFirstItem);
             this.Controls.Add(this.btnSecondItem);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.radioButtonList1);
             this.Name = "FormTest";
@@ -107,6 +131,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnSecondItem;
         private System.Windows.Forms.Button btnFirstItem;
+        private RadioButtonList radioButtonList2;
+        private System.Windows.Forms.Button button2;
 
 
 

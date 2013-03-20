@@ -10,8 +10,10 @@ namespace NiceControls
     public class ItemCollection : IList<Item>
     {
         public delegate void ItemsChangedDelegate(object sender, EventArgs e);
-
         public event ItemsChangedDelegate ItemsChanged;
+
+        public delegate void ItemsChangingDelegate(object sender, EventArgs e);
+        public event ItemsChangingDelegate ItemsChanging;
 
         private readonly List<Item> _items = new List<Item>();
 
@@ -27,6 +29,10 @@ namespace NiceControls
 
         public void Add(Item item)
         {
+            if (ItemsChanging != null)
+            {
+                ItemsChanging(this, null);
+            }
             _items.Add(item);
             if (ItemsChanged != null)
             {

@@ -14,7 +14,12 @@ namespace NiceControls.Tester
 
         private void Form1Load(object sender, EventArgs e)
         {
-            FillRadioButtonList();
+            radioButtonList1.DataSource = FillRadioButtonList();
+
+            radioButtonList2.Items.Add(new Item("NewItem1", 1));
+            radioButtonList2.Items.Add(new Item("NewItem2", 2));
+            radioButtonList2.Items.Add(new Item("NewItem3", 3));
+            radioButtonList2.Items.Add(new Item("NewItem4", 4));
         }
 
         public TestModel CurrentTestModel
@@ -24,7 +29,7 @@ namespace NiceControls.Tester
             { rdlBindingSource.DataSource = value; }
         }
 
-        private void FillRadioButtonList()
+        private object FillRadioButtonList()
         {
             var source = new List<TestModel>
                              {
@@ -41,7 +46,7 @@ namespace NiceControls.Tester
                                          TestEnum = TestEnum.SecondItem
                                      }
                              };
-            radioButtonList1.DataSource = source;
+            return source;
         }
 
         private void Button1Click(object sender, EventArgs e)
@@ -55,7 +60,7 @@ namespace NiceControls.Tester
 
         private void BtnFirstItemClick(object sender, EventArgs e)
         {
-            CurrentTestModel = new TestModel ();
+            CurrentTestModel = new TestModel();
             CurrentTestModel.TestEnum = TestEnum.FirstItem;
         }
 
@@ -63,6 +68,15 @@ namespace NiceControls.Tester
         {
             CurrentTestModel = new TestModel();
             CurrentTestModel.TestEnum = TestEnum.SecondItem;
+        }
+
+        private void Button2Click(object sender, EventArgs e)
+        {
+            if (CurrentTestModel == null)
+            {
+                return;
+            }
+            MessageBox.Show(CurrentTestModel.Id.ToString());
         }
     }
 }

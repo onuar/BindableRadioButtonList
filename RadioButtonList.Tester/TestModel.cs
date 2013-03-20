@@ -40,7 +40,7 @@ namespace NiceControls.Tester
 
         public override string ToString()
         {
-            return string.Format("Text: {0} Value:{1}", TestText, TestEnum.ToString());
+            return string.Format("@Text: {0} @Value: {1}", TestText, TestEnum.ToString());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

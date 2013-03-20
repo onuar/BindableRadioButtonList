@@ -16,22 +16,27 @@ namespace NiceControls
         private int _topMargin = 2;
         private object _dataSource;
         private ListItemOrientation _orientation = ListItemOrientation.Horizontal;
+        private bool _dataSourceBinded = false;
         private const string SelectedIndexEventName = "SelectedIndex";
 
         public RadioButtonList()
         {
             _items = new ItemCollection();
             _items.ItemsChanged += ItemsChanged;
+            _items.ItemsChanging += ItemsChanging;
             DataBindings.CollectionChanged += DataBindingsCollectionChanged;
         }
 
         public delegate void ItemSelectedIndexChangedDelegate(object sender, EventArgs e);
         public event ItemSelectedIndexChangedDelegate SelectedIndexChanged;
 
+        [Browsable(true)]
         public string DisplayMember { get; set; }
 
+        [Browsable(true)]
         public string ValueMember { get; set; }
 
+        [Browsable(true)]
         [DefaultValue(2)]
         public int LeftMargin
         {
@@ -39,6 +44,7 @@ namespace NiceControls
             set { _leftMargin = value; }
         }
 
+        [Browsable(true)]
         [DefaultValue(2)]
         public int TopMargin
         {
@@ -46,13 +52,15 @@ namespace NiceControls
             set { _topMargin = value; }
         }
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ItemCollection Items
         {
             get { return _items; }
             set { _items = value; }
         }
 
+        [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public object DataSource
         {
@@ -63,22 +71,27 @@ namespace NiceControls
                 {
                     throw new ArgumentException("BadDataSourceForComplexBinding");
                 }
-
                 _dataSource = value;
                 UpdateItems(_dataSource);
+                _dataSourceBinded = true;
             }
         }
 
+        [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int SelectedIndex { get; set; }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public object SelectedValue { get { return SelectedItem.Value; } }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public Item SelectedItem { get { return _items[SelectedIndex]; } }
 
         [DefaultValue(ListItemOrientation.Horizontal)]
+        [Browsable(true)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
         public ListItemOrientation Orientation
         {
             get { return _orientation; }
@@ -100,7 +113,7 @@ namespace NiceControls
             bindingSource.DataSourceChanged += BindingSourceDataSourceChanged;
         }
 
-        void BindingSourceDataSourceChanged(object sender, EventArgs e)
+        private void BindingSourceDataSourceChanged(object sender, EventArgs e)
         {
             RegisterNotifyPropertyChanged();
         }
@@ -130,7 +143,7 @@ namespace NiceControls
             }
         }
 
-        void NotifyValuePropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void NotifyValuePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var binding = GetSelectedIndexBinding();
             if (binding == null)
@@ -140,7 +153,6 @@ namespace NiceControls
             var changedProperty = binding.BindingMemberInfo.BindingField;
             if (!string.IsNullOrEmpty(ValueMember) && e.PropertyName.Equals(changedProperty))
             {
-
                 var bindingSource = binding.DataSource as BindingSource;
                 if (bindingSource == null)
                 {
@@ -162,6 +174,14 @@ namespace NiceControls
                     throw new InvalidCastException("RadioButton");
                 }
                 radioButton.Checked = selectedValue.Equals(item.Value);
+            }
+        }
+
+        public void ItemsChanging(object sender, EventArgs e)
+        {
+            if (_dataSourceBinded)
+            {
+                throw new ArgumentException("Items collection cannot be modified when the DataSource property is set.");
             }
         }
 
@@ -226,7 +246,8 @@ namespace NiceControls
                                          {
                                              Text = item.Text,
                                              Tag = item,
-                                             ForeColor = Color.Black
+                                             ForeColor = Color.Black,
+                                             AutoSize = true
                                          };
                 switch (Orientation)
                 {
