@@ -33,9 +33,12 @@
             this.btnSecondItem = new System.Windows.Forms.Button();
             this.btnFirstItem = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.radioButtonList2 = new NiceControls.RadioButtonList();
-            this.radioButtonList1 = new NiceControls.RadioButtonList();
             this.rdlBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.radioButtonList1 = new NiceControls.RadioButtonList();
+            this.radioButtonList3 = new NiceControls.RadioButtonList();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.rdlBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,6 +82,16 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.Button2Click);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(37, 320);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(212, 23);
+            this.button3.TabIndex = 6;
+            this.button3.Text = "ToggleRadioButton by CurrentModel.Id";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.Button3Click);
+            // 
             // radioButtonList2
             // 
             this.radioButtonList2.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -89,6 +102,10 @@
             this.radioButtonList2.Size = new System.Drawing.Size(314, 201);
             this.radioButtonList2.TabIndex = 5;
             this.radioButtonList2.ValueMember = null;
+            // 
+            // rdlBindingSource
+            // 
+            this.rdlBindingSource.DataSource = typeof(NiceControls.Tester.TestModel);
             // 
             // radioButtonList1
             // 
@@ -101,15 +118,33 @@
             this.radioButtonList1.TabIndex = 2;
             this.radioButtonList1.ValueMember = "TestEnum";
             // 
-            // rdlBindingSource
+            // radioButtonList3
             // 
-            this.rdlBindingSource.DataSource = typeof(NiceControls.Tester.TestModel);
+            this.radioButtonList3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.radioButtonList3.DisplayMember = null;
+            this.radioButtonList3.Location = new System.Drawing.Point(640, 25);
+            this.radioButtonList3.Name = "radioButtonList3";
+            this.radioButtonList3.Size = new System.Drawing.Size(288, 201);
+            this.radioButtonList3.TabIndex = 7;
+            this.radioButtonList3.ValueMember = null;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(640, 6);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(90, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Enum datasource";
             // 
             // FormTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(638, 327);
+            this.ClientSize = new System.Drawing.Size(954, 360);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.radioButtonList3);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.radioButtonList2);
             this.Controls.Add(this.btnFirstItem);
             this.Controls.Add(this.btnSecondItem);
@@ -121,6 +156,7 @@
             this.Load += new System.EventHandler(this.Form1Load);
             ((System.ComponentModel.ISupportInitialize)(this.rdlBindingSource)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -133,6 +169,9 @@
         private System.Windows.Forms.Button btnFirstItem;
         private RadioButtonList radioButtonList2;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private RadioButtonList radioButtonList3;
+        private System.Windows.Forms.Label label1;
 
 
 

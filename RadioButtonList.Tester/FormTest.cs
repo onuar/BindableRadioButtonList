@@ -20,6 +20,8 @@ namespace NiceControls.Tester
             radioButtonList2.Items.Add(new Item("NewItem2", 2));
             radioButtonList2.Items.Add(new Item("NewItem3", 3));
             radioButtonList2.Items.Add(new Item("NewItem4", 4));
+
+            radioButtonList3.DataSource = Enum.GetValues(typeof(TestEnum));
         }
 
         public TestModel CurrentTestModel
@@ -77,6 +79,16 @@ namespace NiceControls.Tester
                 return;
             }
             MessageBox.Show(CurrentTestModel.Id.ToString());
+        }
+
+        private void Button3Click(object sender, EventArgs e)
+        {
+            var radioButton = radioButtonList1[CurrentTestModel.TestEnum];
+            if (radioButton == null)
+            {
+                throw new Exception("Radiobutton not found");
+            }
+            radioButton.Enabled = !radioButton.Enabled;
         }
     }
 }

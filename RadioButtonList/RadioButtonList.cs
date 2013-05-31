@@ -97,6 +97,12 @@ namespace NiceControls
             set { _orientation = value; }
         }
 
+        public RadioButton this[object value]
+        {
+            get
+            { return (from radioButton in Controls.OfType<RadioButton>() let item = radioButton.Tag as Item where item != null where item.Value.Equals(value) select radioButton).FirstOrDefault(); }
+        }
+
         private void DataBindingsCollectionChanged(object sender, CollectionChangeEventArgs e)
         {
             var binding = e.Element as Binding;
@@ -174,7 +180,7 @@ namespace NiceControls
                 var item = radioButton.Tag as Item;
                 if (item == null)
                 {
-                    throw new InvalidCastException("RadioButton");
+                    throw new InvalidCastException("RadioButtonTagItem");
                 }
                 radioButton.Checked = selectedValue.Equals(item.Value);
             }
